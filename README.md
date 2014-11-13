@@ -44,14 +44,14 @@ to refer to your own IMS system.
 - Verify connection by using the "Test Transport" button, then select **OK**
 - Select **OK** to save changes.
 
-![TransportSettings](TransportSettings.png "Configuring to use your own IMS system")
+![TransportSettings](https://raw.githubusercontent.com/ibm-rtvs/ibm-ims/master/TransportSettings.png "Configuring to use your own IMS system")
  
 ## Running the sample Simple phonebook application
 - Open a command prompt.
 - Change directory to ibm-ims/applications/client.
 - Run startSimplePhonebookSample.bat *hostname* *port* *datastorename*.
 
-![SimpleSample](SimpleSample.png "Output from the SimpleSample app")
+![SimpleSample](https://raw.githubusercontent.com/ibm-rtvs/ibm-ims/master/SimpleSample.png "Output from the SimpleSample app")
 
 A trace log SimplePhonebookSampleTrace.log is created by IMS Connect
 
@@ -65,7 +65,7 @@ A trace log SimplePhonebookSampleTrace.log is created by IMS Connect
  
   startSimplePhonebookSample.bat localhost 2002 *datastorename*.
 
-![SimpleSampleProxy](SimpleSampleProxy.png "Output from the SimpleSample app, run via the intercept")
+![SimpleSampleProxy](https://raw.githubusercontent.com/ibm-rtvs/ibm-ims/master/SimpleSampleProxy.png "Output from the SimpleSample app, run via the intercept")
   
 
 ## Recording the sample phonebook application
