@@ -34,14 +34,19 @@
         <h1>
 <a id="ibm-ims" class="anchor" href="#ibm-ims" aria-hidden="true"><span class="octicon octicon-link"></span></a>ibm-ims</h1>
 
-<p>Example of how Rational Integration Tester can be used to test and virtualize IMS resources.</p>
+<p>Example of how Rational Integration Tester can be used to trace and test IMS resources.</p>
 
 <ul>
-<li>A RIT project which contains
+<li><p>Several Java IMS Connect sample applications. These are functionally identical to 
+the samples shipped as part of  <strong>IMS Enterprise Suite Connect APIs for Java</strong> other than the host &amp; port can be specified on the command line.  </p></li>
+<li>
+<p>A RIT project which contains</p>
 
 <ul>
-<li>A test suite ...</li>
-<li>A stub ......</li>
+<li>A test suite to run the IVTNO transaction</li>
+<li>A stub which simulates the IVTNO transaction</li>
+<li>COBOL copybooks defining the input and output structure on the IVTNO messages.</li>
+<li>Monitor definitions for the relevant operations.</li>
 </ul>
 </li>
 </ul>
@@ -53,22 +58,92 @@
 
 <pre><code>ibm-ims
     rit-projects
-        xxxx.zip
+        rit-project-ibm-ims.zip
     applications
         client
-            .... 
+           IMSESConnectAPIJava
+           startSimplePhonebookSample.bat
 </code></pre>
 
 <ul>
-<li>Download the required 'IMS Enterprise Suite Connect APIs for Java' libraries from <a href="www.ibm.com/software/data/ims/connect/">www.ibm.com/software/data/ims/connect/</a> and unzip into the ibm-ims/applications/client folder.<br>
+<li>Unzip rit-projects/rit-project-ibm-ims.zip. This contains a RIT project ibm-ims.ghp</li>
+<li>Download the required <strong>IMS Enterprise Suite Connect APIs for Java</strong> libraries
+from <a href="www.ibm.com/software/data/ims/connect/">www.ibm.com/software/data/ims/connect/</a> and 
+unzip into the ibm-ims/applications/client/IMSESConnectAPIJava folder.<br>
 </li>
 </ul>
 
 <h2>
-<a id="running-the-sample-phonebook-application" class="anchor" href="#running-the-sample-phonebook-application" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running the sample phonebook application</h2>
+<a id="configuring-the-rit-project-to-match-your-ims-environment" class="anchor" href="#configuring-the-rit-project-to-match-your-ims-environment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuring the RIT project to match your IMS environment</h2>
+
+<p>The RIT project's <em>Production</em> environment has been configured to an IMS system on ims1.company.com:9999. You need to modify the project settings
+to refer to your own IMS system. </p>
+
+<ul>
+<li>Start RIT.</li>
+<li>Select Open, then navigate to the ibm-ims/ibm-ims.ghp file. </li>
+<li>Go to "Architecture School" (F9).</li>
+<li>Select "Physical View" tab</li>
+<li>Open <strong>ims1</strong>
+</li>
+<li>Change hostname and port to match your IMS server settings</li>
+<li>Verify connection by using the "Test Transport" button, then select <strong>OK</strong>
+</li>
+<li>Select <strong>OK</strong> to save changes.</li>
+</ul>
+
+<p><img src="TransportSettings.png" alt="TransportSettings" title="Configuring to use your own IMS system"></p>
+
+<h2>
+<a id="running-the-sample-simple-phonebook-application" class="anchor" href="#running-the-sample-simple-phonebook-application" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running the sample Simple phonebook application</h2>
+
+<ul>
+<li>Open a command prompt.</li>
+<li>Change directory to ibm-ims/applications/client.</li>
+<li>Run startSimplePhonebookSample.bat <em>hostname</em> <em>port</em> <em>datastorename</em>.</li>
+</ul>
+
+<p><img src="SimpleSample.png" alt="SimpleSample" title="Output from the SimpleSample app"></p>
+
+<p>A trace log SimplePhonebookSampleTrace.log is created by IMS Connect</p>
+
+<h2>
+<a id="intercepting-the-sample-phonebook-application-flows" class="anchor" href="#intercepting-the-sample-phonebook-application-flows" aria-hidden="true"><span class="octicon octicon-link"></span></a>Intercepting the sample phonebook application flows</h2>
+
+<ul>
+<li>
+<p>Modify the HTTP/TCP proxy service configuration file httptcp/registration.xml by adding the following line:</p>
+
+<p>&lt;forward bind="localhost:2002" destination="<em>hostname</em>:<em>port</em>" type="ims" /&gt;</p>
+</li>
+<li><p>Stop, re-start the HTTP/TCP proxy service. Now, IMS traffic directed to localhost:2002 will be directed to <em>hostname</em>:<em>port</em></p></li>
+<li>
+<p>Re-run application, redirecting traffic through the intercept</p>
+
+<p>startSimplePhonebookSample.bat localhost 2002 <em>datastorename</em>.</p>
+</li>
+</ul>
+
+<p><img src="SimpleSampleProxy.png" alt="SimpleSampleProxy" title="Output from the SimpleSample app, run via the intercept"></p>
 
 <h2>
 <a id="recording-the-sample-phonebook-application" class="anchor" href="#recording-the-sample-phonebook-application" aria-hidden="true"><span class="octicon octicon-link"></span></a>Recording the sample phonebook application</h2>
+
+<ul>
+<li>Start RIT.</li>
+<li>Select Open, then navigate to the ibm-ims/ibm-ims.ghp file. </li>
+<li>Go to "Recording Studio" (F9).</li>
+<li>In the Events Monitors window import monitors from file <em>monitors.rsh</em>. </li>
+<li>Select <em>Record</em>.</li>
+<li>Open a command prompt.</li>
+<li>Change directory to ibm-ims/applications/client.</li>
+<li>
+<p>Re-run application, redirecting traffic through the intercept</p>
+
+<p>startSimplePhonebookSample.bat localhost 2002 <em>datastorename</em>.</p>
+</li>
+<li><p>Using the application will results in operations being shown in the Events View window of RIT.  </p></li>
+</ul>
       </section>
     </div>
 
